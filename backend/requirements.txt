@@ -4,3 +4,16 @@ django-cors-headers
 djangorestframework
 pytz
 sqlparse
+
+boto3
+botocore
+django-filter
+django-storages
+# gunicorn
+jmespath
+Pillow
+python-dateutil
+s3transfer
+six
+urllib3
+whitenoise
