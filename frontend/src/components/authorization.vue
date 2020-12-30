@@ -141,6 +141,10 @@ main {
   margin-right: auto;
 }
 
+.btn_signup:hover {
+  background-color: rgb(130, 0, 245);
+}
+
 .btn_login {
   background-color: rgba(0, 0, 0, 0);
   -moz-user-select: none;
@@ -159,6 +163,10 @@ main {
   max-width: 75%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.btn_login:hover {
+  background-color: rgba(130, 0, 245, 0.1);
 }
 
 .gfdsdf {

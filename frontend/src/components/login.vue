@@ -36,7 +36,6 @@
                 </div>
                 <input autocapitalize="none"
                        autocomplete="on"
-                       autocorrect="off"
                        class="sdasd"
                        data-focusable="true"
                        dir="auto"
@@ -54,7 +53,6 @@
                 </div>
                 <input autocapitalize="none"
                        autocomplete="on"
-                       autocorrect="off"
                        class="sdasd"
                        data-focusable="true"
                        dir="auto"
@@ -64,7 +62,6 @@
               </div>
             </label>
           </div>
-
           <div class="mainstyle">
             <div aria-disabled="true" class="mainstyle dscxza"
                  data-testid="LoginForm_Login_Button"
@@ -74,6 +71,13 @@
                 <span class="">Войти</span>
               </div>
             </div>
+          </div>
+          <div class="mainstyle dsczasd">
+            <a class="mainstyle gdfdfa" data-focusable="true" href="https://twistor.com/account/begin_password_reset"
+               role="link">Забыли пароль?</a>
+            <span aria-hidden="true" class="mainstyle bvcdsf">·</span>
+            <a class="mainstyle gdfdfa" data-focusable="true" href="/signup" role="link">Зарегистрироваться в
+              Твисторе</a>
           </div>
         </form>
       </div>
@@ -216,5 +220,43 @@ form {
   text-align: center;
   max-width: 100%;
   display: flex;
+}
+
+.dsczasd {
+  -webkit-box-align: baseline;
+  align-items: baseline;
+  flex-shrink: 1;
+  display: inline-flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.gdfdfa {
+  cursor: pointer;
+  color: rgb(255, 131, 0);
+  overflow-wrap: break-word;
+  min-width: 0;
+  line-height: 1.3125;
+  font: inherit;
+  white-space: inherit;
+  margin: 0;
+  padding: 0;
+  text-decoration-line: none;
+}
+
+.gdfdfa:hover {
+  text-decoration-line: underline;
+}
+
+.bvcdsf {
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-wrap: break-word;
+  flex-shrink: 0;
+  color: rgb(255, 255, 255);
+
 }
 </style>

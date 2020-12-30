@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Login from "@/components/login";
+import Login from "@/components/registration";
 
 export default {
   name: 'App',
@@ -20,6 +20,9 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  overscroll-behavior-y: none;
+  font-size: 15px;
+  /*margin-right: 17px;*/
 }
 
 body {
@@ -46,7 +49,6 @@ html, body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #ffffff;
   background-color: #1d0032;
   -ms-flex-align: stretch;
