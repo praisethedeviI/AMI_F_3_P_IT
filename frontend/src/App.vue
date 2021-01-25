@@ -5,7 +5,9 @@
 </template>
 
 <script>
-import Login from "@/components/registration";
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Login from "@/components/login";
 
 export default {
   name: 'App',
@@ -84,4 +86,13 @@ html, body {
   align-self: flex-start;
   display: inline-block;
 }
+
+.form-control:focus {
+  background-color: initial;
+  outline: initial;
+  box-shadow: none;
+  border: none;
+  line-height: initial;
+}
+
 </style>

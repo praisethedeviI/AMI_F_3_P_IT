@@ -13,7 +13,9 @@
           <input id="name"
                  v-model.trim="formReg.name"
                  :class="status($v.formReg.name)"
-                 class="form-control" type="text" @blur="$v.formReg.name.$touch()">
+                 class="form-control"
+                 type="text"
+                 @blur="$v.formReg.name.$touch()">
 
           <div v-if="!$v.formReg.name.required" class="invalid-feedback">{{ reqText }}</div>
           <div v-if="!$v.formReg.name.alpha" class="invalid-feedback">{{ alphaText }}</div>
@@ -120,16 +122,13 @@
           </div>
 
           <button class="btn btn-light mr-2" type="button" @click="step--">Назад</button>
-          <button :disabled="disabledBtnFinish"
-                  class="btn btn-primary" type="submit">Зарегистрироваться
+          <button :disabled="disabledBtnFinish" class="btn btn-primary" type="submit">
+            Зарегистрироваться
           </button>
-
         </div>
       </transition>
     </form>
-
   </div>
-
 </template>
 
 <script>

@@ -35,8 +35,11 @@
                   </svg>
                 </div>
               </div>
-              <div class="mainstyle adbvdcfhr">
+              <form class="mainstyle adbvdcfhr" novalidate @submit.prevent="userRegister">
                 <div class="mainstyle" style="margin-left: 30px;margin-right: 30px; text-align: left;">
+                  <div v-if="regMessage" class="alert alert-success" role="alert">
+                    Вы успешно зарегистрировались!
+                  </div>
                   <div class="mainstyle sdajhugty">Создайте учетную запись</div>
                   <div class="mainstyle dsfdscx">
                     <label class="mainstyle fdxads">
@@ -45,13 +48,20 @@
                           <span class="sfasa">Имя</span>
                         </div>
                         <input autocapitalize="none"
-                               autocomplete="on"
-                               class="sdasd"
+                               id="name"
+                               v-model.trim="formReg.name"
                                data-focusable="true"
                                dir="auto"
-                               name="session[username_or_email]"
+                               :class="status($v.formReg.name)"
                                spellcheck="false"
-                               type="text">
+                               autocomplete="off"
+                               class="sdasd form-control"
+                               name="session[name]"
+                               type="text"
+                               @blur="$v.formReg.name.$touch()">
+
+                        <div v-if="!$v.formReg.name.required" class="invalid-feedback">{{ reqText }}</div>
+                        <div v-if="!$v.formReg.name.alpha" class="invalid-feedback">{{ alphaText }}</div>
                       </div>
                     </label>
                   </div>
@@ -63,29 +73,49 @@
                         </div>
                         <input autocapitalize="none"
                                autocomplete="on"
-                               class="sdasd"
+                               id="tel"
                                data-focusable="true"
                                dir="auto"
-                               name="session[username_or_email]"
+                               v-model.trim="formReg.tel"
                                spellcheck="false"
-                               type="text">
+                               :class="status($v.formReg.tel)"
+                               class="sdasd form-control"
+                               name="session[telephone]"
+                               type="tel"
+                               @blur="$v.formReg.tel.$touch()">
+
+                        <div v-if="!$v.formReg.tel.required" class="invalid-feedback">
+                          {{ reqText }}
+                        </div>
+                        <div v-if="!$v.formReg.tel.MOBILEREG" class="invalid-feedback">
+                          {{ alphaText }}
+                        </div>
                       </div>
                     </label>
                   </div>
                   <div class="mainstyle dsfdscx">
                     <label class="mainstyle fdxads">
                       <div class="mainstyle dsdssa">
-                        <div class="mainstyle fdsfcaqw">
-                          <span class="sfasa">Почта</span>
-                        </div>
+                        <div class="mainstyle fdsfcaqw"><span class="sfasa">Почта</span></div>
                         <input autocapitalize="none"
                                autocomplete="on"
-                               class="sdasd"
+                               id="email"
                                data-focusable="true"
                                dir="auto"
-                               name="session[username_or_email]"
+                               v-model.trim="formReg.email"
                                spellcheck="false"
-                               type="text">
+                               :class="status($v.formReg.email)"
+                               class="sdasd form-control"
+                               name="session[email]"
+                               type="email"
+                               @blur="$v.formReg.email.$touch()">
+
+                        <div v-if="!$v.formReg.email.required" class="invalid-feedback">
+                          {{ reqText }}
+                        </div>
+                        <div v-if="!$v.formReg.email.email" class="invalid-feedback">
+                          Пожалуйста введите Email адрес
+                        </div>
                       </div>
                     </label>
                   </div>
@@ -95,13 +125,17 @@
                       если эта учетная запись предназначена для компании, домашнего животного и т. д.
                     </div>
                   </div>
-
                   <div class="mainstyle jytrvxa">
                     <div class="mainstyle eryczaq">
                       <div class="mainstyle gervsqe" dir="auto">Месяц</div>
-                      <select id="Месяц" aria-label="Месяц" class="mainstyle hjrtndxr" data-focusable="true"
-                              data-testid="">
-                        <option aria-disabled="true" class="r-yfoy6g" disabled="" value=""></option>
+                      <select id="month"
+                              v-model="formReg.month"
+                              :class="status($v.formReg.month)"
+                              aria-label="Месяц"
+                              class="mainstyle hjrtndxr form-control"
+                              @blur="$v.formReg.month.$touch()">
+
+                        <option aria-disabled="true" class="r-yfoy6g" disabled="" value="">Месяц</option>
                         <option class="r-yfoy6g" value="1">январь</option>
                         <option class="r-yfoy6g" value="2">февраль</option>
                         <option class="r-yfoy6g" value="3">март</option>
@@ -121,12 +155,58 @@
                               d="M20.207 8.147c-.39-.39-1.023-.39-1.414 0L12 14.94 5.207 8.147c-.39-.39-1.023-.39-1.414 0-.39.39-.39 1.023 0 1.414l7.5 7.5c.195.196.45.294.707.294s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.022 0-1.413z"></path>
                         </g>
                       </svg>
+                      <div v-if="!$v.formReg.month.required" class="invalid-feedback">
+                        {{ reqTextMin }}
+                      </div>
                     </div>
                     <div class="mainstyle eryczaq sdqqvcfs">
                       <div class="mainstyle gervsqe" dir="auto">День</div>
-                      <select id="День" aria-label="День" class="mainstyle hjrtndxr" data-focusable="true"
-                              data-testid="">
-                        <option aria-disabled="true" class="r-yfoy6g" disabled="" value=""></option>
+                      <select id="day"
+                              v-model="formReg.date"
+                              :class="status($v.formReg.date)"
+                              aria-label="День"
+                              class="mainstyle hjrtndxr custom-select"
+                              data-focusable="true"
+                              data-testid=""
+                              @blur="$v.formReg.date.$touch()">
+
+                        <option aria-disabled="true" class="r-yfoy6g" disabled="" value="">Дата</option>
+                        <!--                        <option class="r-yfoy6g" value="1">1</option>-->
+                        <!--                        <option class="r-yfoy6g" value="2">2</option>-->
+                        <!--                        <option class="r-yfoy6g" value="3">3</option>-->
+                        <!--                        <option class="r-yfoy6g" value="4">4</option>-->
+                        <!--                        <option class="r-yfoy6g" value="5">5</option>-->
+                        <!--                        <option class="r-yfoy6g" value="6">6</option>-->
+                        <!--                        <option class="r-yfoy6g" value="7">7</option>-->
+                        <!--                        <option class="r-yfoy6g" value="8">8</option>-->
+                        <!--                        <option class="r-yfoy6g" value="9">9</option>-->
+                        <!--                        <option class="r-yfoy6g" value="10">10</option>-->
+                        <!--                        <option class="r-yfoy6g" value="11">11</option>-->
+                        <!--                        <option class="r-yfoy6g" value="12">12</option>-->
+                        <!--                        <option class="r-yfoy6g" value="13">13</option>-->
+                        <!--                        <option class="r-yfoy6g" value="14">14</option>-->
+                        <!--                        <option class="r-yfoy6g" value="15">15</option>-->
+                        <!--                        <option class="r-yfoy6g" value="16">16</option>-->
+                        <!--                        <option class="r-yfoy6g" value="17">17</option>-->
+                        <!--                        <option class="r-yfoy6g" value="18">18</option>-->
+                        <!--                        <option class="r-yfoy6g" value="19">19</option>-->
+                        <!--                        <option class="r-yfoy6g" value="20">20</option>-->
+                        <!--                        <option class="r-yfoy6g" value="21">21</option>-->
+                        <!--                        <option class="r-yfoy6g" value="22">22</option>-->
+                        <!--                        <option class="r-yfoy6g" value="23">23</option>-->
+                        <!--                        <option class="r-yfoy6g" value="24">24</option>-->
+                        <!--                        <option class="r-yfoy6g" value="25">25</option>-->
+                        <!--                        <option class="r-yfoy6g" value="26">26</option>-->
+                        <!--                        <option class="r-yfoy6g" value="27">27</option>-->
+                        <!--                        <option class="r-yfoy6g" value="28">28</option>-->
+                        <!--                        <option class="r-yfoy6g" value="29">29</option>-->
+                        <!--                        <option class="r-yfoy6g" value="30">30</option>-->
+                        <!--                        <option class="r-yfoy6g" value="31">31</option>-->
+                        <option v-for="(date, index) in dates"
+                                :key="index"
+                                :value="date"
+                                class="r-yfoy6g form-control custom-select">{{ date }}
+                        </option>
                       </select>
                       <svg class="mainstyle fdbera" viewBox="0 0 24 24">
                         <g>
@@ -134,13 +214,27 @@
                               d="M20.207 8.147c-.39-.39-1.023-.39-1.414 0L12 14.94 5.207 8.147c-.39-.39-1.023-.39-1.414 0-.39.39-.39 1.023 0 1.414l7.5 7.5c.195.196.45.294.707.294s.512-.098.707-.293l7.5-7.5c.39-.39.39-1.022 0-1.413z"></path>
                         </g>
                       </svg>
+                      <div v-if="!$v.formReg.date.required" class="invalid-feedback">{{ reqTextMin }}</div>
                     </div>
                     <div class="mainstyle eryczaq sdqqvcfs" style="margin-right: 0;">
                       <div class="mainstyle gervsqe" dir="auto">Год</div>
-                      <select id="Год" aria-label="Год" class="mainstyle hjrtndxr" data-focusable="true"
-                              data-testid="">
-                        <option aria-disabled="true" class="r-yfoy6g" disabled="" value=""></option>
+                      <select id="year"
+                              v-model="formReg.year"
+                              :class="status($v.formReg.year)"
+                              aria-label="Год"
+                              class="mainstyle hjrtndxr custom-select"
+                              data-focusable="true"
+                              @blur="$v.formReg.year.$touch()">
+
+                        <option aria-disabled="true" class="r-yfoy6g" disabled="" value="">Год</option>
+
+                        <option v-for="(year, index) in years"
+                                :key="index"
+                                :value="year"
+                                class="r-yfoy6g">{{ year }}
+                        </option>
                       </select>
+                      <div v-if="!$v.formReg.year.required" class="invalid-feedback">{{ reqTextMin }}</div>
                       <svg class="mainstyle fdbera" viewBox="0 0 24 24">
                         <g>
                           <path
@@ -157,36 +251,57 @@
                             <span class="sfasa">Пароль</span>
                           </div>
                           <input autocapitalize="none"
-                                 autocomplete="on"
-                                 class="sdasd"
+                                 id="password"
+                                 v-model.trim="formReg.password"
                                  data-focusable="true"
                                  dir="auto"
-                                 name="session[username_or_email]"
+                                 :class="status($v.formReg.password)"
                                  spellcheck="false"
-                                 type="text">
+                                 autocomplete="off"
+                                 class="sdasd form-control"
+                                 name="session[password]"
+                                 type="password"
+                                 @blur="$v.formReg.password.$touch()">
+                          <div v-if="!$v.formReg.password.required" class="invalid-feedback">
+                            {{ reqText }}
+                          </div>
+                          <div v-if="!$v.formReg.password.minLength" class="invalid-feedback">
+                            {{ minLengthText }}
+                          </div>
                         </div>
                       </label>
                     </div>
                     <div class="mainstyle dsfdscx fsawec" style="margin-right: 0;">
                       <label class="mainstyle fdxads">
                         <div class="mainstyle dsdssa">
-                          <div class="mainstyle fdsfcaqw">
-                            <span class="sfasa">Повторите пароль</span>
-                          </div>
+                          <div class="mainstyle fdsfcaqw"><span class="sfasa">Повторите пароль</span></div>
                           <input autocapitalize="none"
-                                 autocomplete="on"
-                                 class="sdasd"
+                                 id="passwordConfirm"
+                                 v-model.trim="formReg.passwordConfirm"
                                  data-focusable="true"
                                  dir="auto"
-                                 name="session[username_or_email]"
+                                 :class="status($v.formReg.passwordConfirm)"
                                  spellcheck="false"
-                                 type="text">
+                                 autocomplete="off"
+                                 class="sdasd form-control"
+                                 name="session[password]"
+                                 type="password"
+                                 @blur="$v.formReg.passwordConfirm.$touch()">
+
+                          <div v-if="!$v.formReg.passwordConfirm.sameAs" class="invalid-feedback">
+                            {{ passwordConfirmText }}
+                          </div>
                         </div>
                       </label>
                     </div>
                   </div>
+                  <div class="mainstyle dsfdscx">
+                    <button :disabled="regBtn" class="btn btn-primary rwerwsd" type="submit">
+                      Зарегистрироваться
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -194,10 +309,118 @@
     </div>
   </div>
 </template>
-
 <script>
+import {email, helpers, minLength, required, sameAs} from 'vuelidate/lib/validators'
+
+const alpha = helpers.regex('alpha', /^[a-zA-Zа-яёА-ЯЁ]*$/)
+// Custom regex for a phone number
+const MOBILEREG = helpers.regex('alpha', /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/);
 export default {
-  name: "registration"
+  data() {
+    return {
+      regMessage: false,
+      dates: [],
+      years: [],
+      yearEnd: 2021,
+      reqText: 'Поле обязательно для заполнения',
+      reqTextMin: 'обязательно',
+      alphaText: 'Запрещены цифры, пробелы и другие символы',
+      minLengthText: 'Минимальная длина 6 символов!',
+      passwordConfirmText: 'Пароли не совпадают',
+      formReg: {
+        name: '',
+        tel: '',
+        email: '',
+        month: '',
+        date: '',
+        year: '',
+        password: '',
+        passwordConfirm: ''
+      }
+    }
+  },
+  computed: {
+    regBtn() {
+      return this.$v.formReg.name.$invalid ||
+          this.$v.formReg.tel.$invalid ||
+          this.$v.formReg.email.$invalid ||
+          this.$v.formReg.year.$invalid ||
+          this.$v.formReg.date.$invalid ||
+          this.$v.formReg.month.$invalid ||
+          this.$v.formReg.password.$invalid ||
+          this.$v.formReg.passwordConfirm.$invalid
+    },
+  },
+  methods: {
+    status(validation) {
+      return {
+        'is-invalid': validation.$error,
+        'error': validation.$error
+      }
+    },
+    userRegister() {
+      console.group("Form second")
+      console.log('Вы успешно зарегистрированны!')
+      console.log('Ваше имя: ' + this.formReg.name)
+      console.log('Email: ' + this.formReg.email)
+      console.log('Tel: ' + this.formReg.tel)
+      console.log('Дата рождения: ' + this.formReg.month + '.' + this.formReg.date + '.' + this.formReg.year)
+      console.log('Пароль: ' + this.formReg.password)
+      console.groupEnd()
+      this.reset()
+    },
+    reset() {
+      // сбросить шаг и показать сообщение о регистрации
+      this.regMessage = true;
+      // убрать сообщение о регистрации
+      setTimeout(() => {
+        this.regMessage = false
+      }, 3000)
+      // сбросить все поля
+      for (let input in this.formReg) {
+        this.formReg[input] = ''
+      }
+      // сбросить валидацию
+      this.$v.$reset()
+    }
+  },
+  validations: {
+    formReg: {
+      name: {
+        required,
+        alpha
+      },
+      tel: {
+        required,
+        MOBILEREG
+      },
+      email: {
+        email,
+        required
+      },
+      month: {
+        required
+      },
+      date: {
+        required
+      },
+      year: {
+        required
+      },
+      password: {
+        required,
+        minLength: minLength(6)
+      },
+      passwordConfirm: {
+        sameAs: sameAs('password')
+      }
+    }
+  },
+  created() {
+    for (let i = this.yearEnd; i >= 1980; i--) this.years.push(i);
+    for (let i = 1; i <= 31; i++) this.dates.push(i);
+  }
+
 }
 </script>
 
@@ -276,7 +499,7 @@ export default {
   min-height: 400px;
   max-width: 80vw;
   max-height: 90vh;
-  height: 650px;
+  height: 70%;
   min-width: 600px;
   flex-shrink: 1;
   border-radius: 16px;
@@ -401,6 +624,8 @@ export default {
   padding: 0;
   border-width: 0;
   border-radius: 0;
+  line-height: normal !important;
+  height: auto;
 }
 
 .dfgsac {
@@ -451,15 +676,18 @@ export default {
 }
 
 .hjrtndxr {
-  border-width: 0;
-  border-radius: 0;
-  color: rgb(255, 255, 255);
-  outline-style: none;
-  font-size: 19px;
-  appearance: none;
-  cursor: pointer;
-  margin: 5px 0 0;
-  padding: 20px 5px 5px;
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  color: rgb(255, 255, 255) !important;
+  outline-style: none !important;
+  font-size: 19px !important;
+  appearance: none !important;
+  cursor: pointer !important;
+  margin: 5px 0 0 !important;
+  padding: 10px 5px 5px !important;
+  height: auto !important;
+  line-height: normal !important;
+  background-color: #1d0032 !important;
 }
 
 option {
@@ -498,5 +726,17 @@ option:disabled {
   background-color: #1d0032;
   flex-grow: 1;
   margin-right: 10px;
+}
+
+.rwerwsd {
+  font-weight: 700;
+  background-color: rgb(255 131 0);
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+  min-height: 49px;
+  border-radius: 9999px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0);
+  border-width: 1px;
 }
 </style>

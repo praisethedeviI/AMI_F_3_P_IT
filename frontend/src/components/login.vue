@@ -27,7 +27,10 @@
       </svg>
       <h1>Войти в Твистер</h1>
       <div class="mainstyle" style="width: 100%;">
-        <form action="/sessions" class="mainstyle" method="post" novalidate>
+        <form action="/sessions" class="mainstyle" method="post" novalidate @submit.prevent="userRegister">
+          <div v-if="logMessage" class="alert alert-warning" role="alert">
+            Не правильные входные данные
+          </div>
           <div class="mainstyle dsfdscx">
             <label class="mainstyle fdxads">
               <div class="mainstyle dsdssa">
@@ -39,9 +42,16 @@
                        class="sdasd"
                        data-focusable="true"
                        dir="auto"
-                       name="session[username_or_email]"
+                       id="login"
                        spellcheck="false"
-                       type="text">
+                       v-model.trim="formLog.login"
+                       :class="{'is-invalid':$v.formLog.login.$error}"
+                       name="session[tel_or_email]"
+                       type="email"
+                       @blur="$v.formLog.login.$touch()">
+
+                <div v-if="!$v.formLog.login.required" class="invalid-feedback">{{ reqText }}</div>
+                <div v-if="!$v.formLog.login.checklogin" class="invalid-feedback">{{ LoginText }}</div>
               </div>
             </label>
           </div>
@@ -56,28 +66,38 @@
                        class="sdasd"
                        data-focusable="true"
                        dir="auto"
-                       name="session[username_or_email]"
+                       id="password"
                        spellcheck="false"
-                       type="text">
+                       v-model.trim="formLog.password"
+                       :class="{'is-invalid':$v.formLog.password.$error}"
+                       name="session[password]"
+                       type="password"
+                       @blur="$v.formLog.password.$touch()">
+                <div v-if="!$v.formLog.password.required" class="invalid-feedback">
+                  {{ reqText }}
+                </div>
+                <div v-if="!$v.formLog.password.minLength" class="invalid-feedback">
+                  {{ minLengthText }}
+                </div>
               </div>
             </label>
           </div>
-          <div class="mainstyle">
-            <div aria-disabled="true" class="mainstyle dscxza"
-                 data-testid="LoginForm_Login_Button"
-                 disabled="" role="button">
-              <div class=""
-                   dir="auto">
-                <span class="">Войти</span>
-              </div>
-            </div>
+
+          <div class="mainstyle dsfdscx">
+            <button :disabled="logBtn" class="btn btn-primary dscxza" type="submit">
+              Зарегистрироваться
+            </button>
           </div>
           <div class="mainstyle dsczasd">
             <a class="mainstyle gdfdfa" data-focusable="true" href="https://twistor.com/account/begin_password_reset"
-               role="link">Забыли пароль?</a>
+               role="link">Забыли пароль?
+            </a>
+
             <span aria-hidden="true" class="mainstyle bvcdsf">·</span>
-            <a class="mainstyle gdfdfa" data-focusable="true" href="/signup" role="link">Зарегистрироваться в
-              Твисторе</a>
+
+            <a class="mainstyle gdfdfa" data-focusable="true" href="/signup" role="link">
+              Зарегистрироваться в Твисторе
+            </a>
           </div>
         </form>
       </div>
@@ -86,8 +106,49 @@
 </template>
 
 <script>
+import {email, helpers, minLength, or, required} from 'vuelidate/lib/validators'
+
+const MOBILEREG = helpers.regex('alpha', /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/);
 export default {
-  name: "login"
+  name: "login",
+  data() {
+    return {
+      logMessage: false,
+      reqText: 'Поле обязательно для заполнения',
+      reqTextMin: 'обязательно',
+      LoginText: 'Не похоже на почту или телефон',
+      minLengthText: 'Минимальная длина 6 символов!',
+      passwordConfirmText: 'Пароли не совпадают',
+      formLog: {
+        login: '',
+        password: ''
+      }
+    }
+  },
+  computed: {
+    logBtn() {
+      return this.$v.formLog.login.$invalid ||
+          this.$v.formLog.password.$invalid
+    },
+  }, methods: {
+    userRegister() {
+      console.group("Form second")
+      console.log('Вы успешно зарегистрированны!')
+      console.groupEnd()
+    }
+  },
+  validations: {
+    formLog: {
+      login: {
+        required,
+        checklogin: or(email, MOBILEREG)
+      },
+      password: {
+        required,
+        minLength: minLength(6)
+      }
+    }
+  },
 }
 </script>
 
@@ -187,12 +248,16 @@ form {
 }
 
 .dscxza {
-  opacity: 0.5;
+  font-weight: 700;
+  background-color: rgb(255 131 0);
   transition-property: background-color, box-shadow;
   transition-duration: 0.2s;
   min-height: 49px;
-  background-color: rgb(145, 0, 254);
-  height: 0px;
+  border-radius: 9999px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0) !important;
+  border-width: 1px;
+  height: 0;
   outline-style: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -201,10 +266,6 @@ form {
   padding-left: 30px;
   padding-right: 30px;
   margin: 10px;
-  border-color: rgba(0, 0, 0, 0);
-  border-style: solid;
-  border-radius: 9999px;
-  border-width: 1px;
   font-size: 19px;
   line-height: 1;
   overflow-wrap: break-word;
