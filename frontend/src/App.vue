@@ -7,7 +7,7 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Login from "@/components/login";
+import Login from "@/components/home";
 
 export default {
   name: 'App',
@@ -79,6 +79,18 @@ html, body {
   padding: 0;
   position: relative;
   z-index: 0;
+}
+
+.mainstyle_2 {
+  border: 0 solid #ffffff;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  display: inline;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .svgg {
