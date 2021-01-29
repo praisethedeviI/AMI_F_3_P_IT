@@ -1,5 +1,5 @@
 <template>
-  <div class="mainstyle dsfwrv">
+  <div v-bind="beforeMount" class="mainstyle dsfwrv">
     <div aria-hidden="false" class="mainstyle dfsacasd">
       <header class="mainstyle sdasqwe" role="banner">
         <div class="mainstyle vdcderwrs">
@@ -100,7 +100,7 @@
                   </div>
                   <div class="mainstyle hrevcs">
                     <div class="mainstyle mlh3eg">
-                      <form class="mainstyle hdeberg">
+                      <form class="mainstyle hdeberg" @submit="submitForm">
                         <div class="mainstyle gkmyufg">
                           <div class="mainstyle rthrer">
                             <div class="maintstyle nrtewrt">
@@ -146,7 +146,10 @@
                       <section class="mainstyle" role="region">
                         <div aria-label="Хронология: ваша домашняя хронология" class="mainstyle">
                           <div class="mainstyle" style="position: relative;">
-                            <div style="position: relative;width: 100%;">
+                            <div v-for="(post, index) in posts"
+                                 :key="index"
+                                 :value="post"
+                                 style="position: relative;width: 100%;">
                               <div class="mainstyle fsdgewf">
                                 <div class="mainstyle">
                                   <article class="mainstyle dfsewfvew"
@@ -186,7 +189,7 @@
                                                     <div class="mainstyle dsafqw">
                                                       <div class="mainstyle gwewcq">
                                                         <div class="mainstyle_2 hjerevew" dir="auto">
-                                                          <span class="mainstyle_2">{{ text_nameuser }}</span>
+                                                          <span class="mainstyle_2">{{ post.username }}</span>
                                                         </div>
                                                       </div>
                                                     </div>
@@ -196,7 +199,7 @@
                                             </div>
                                             <div class="mainstyle">
                                               <div class="mainstyle hergfdvs" dir="auto" lang="ru">
-                                                {{ text_post }}
+                                                {{ post.body }}
                                               </div>
                                             </div>
                                           </div>
@@ -223,18 +226,25 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 
 export default {
   name: "home",
   data() {
     return {
+      username: '',
+      texts: '',
+      image_user: '',
       maxword: 700,
       balanceworld: '',
       row: 1,
-      texts: '',
+      posts: []
     }
   },
   computed: {
+    mapPost() {
+      return mapGetters(['posts'])
+    },
     resizeArea: function () {
       return Math.ceil(this.texts.length / 70)
     },
@@ -244,8 +254,30 @@ export default {
     btnPush() {
       return this.texts.length === 0;
     },
+  },
+  methods: {
+    submitForm(event) {
+      this.createNote()
+      // Т.к. мы уже отправили запрос на создание заметки строчкой выше,
+      // нам нужно теперь очистить поля username и texts
+      this.username = ''
+      this.texts = ''
+      // preventDefault нужно для того, чтобы страница
+      // не перезагружалась после нажатия кнопки submit
+      event.preventDefault()
+    },
+    createNote() {
+      // Вызываем действие `createNote` из хранилища, которое
+      // отправит запрос на создание новой заметки к нашему API.
+      this.$store.dispatch('createPost', {username: 'this.username', body: this.texts})
+    },
+    beforeMount() {
+      // Перед тем как загрузить страницу, нам нужно получить список всех
+      // имеющихся заметок. Для этого мы вызываем действие `getPosts` из
+      // нашего хранилища
+      this.$store.dispatch('getPosts')
+    }
   }
-
 }
 </script>
 
