@@ -85,10 +85,8 @@
                   <span style="vertical-align: inherit;font-size: 21px; font-weight: 700">Семен</span>
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </header>
       <main class="mainstyle hdbdrw">
@@ -100,10 +98,9 @@
                   <div class="mainstyle hrthcv">
                     <div class="mainstyle terhfde">Главная</div>
                   </div>
-
                   <div class="mainstyle hrevcs">
                     <div class="mainstyle mlh3eg">
-                      <div class="mainstyle hdeberg">
+                      <form class="mainstyle hdeberg">
                         <div class="mainstyle gkmyufg">
                           <div class="mainstyle rthrer">
                             <div class="maintstyle nrtewrt">
@@ -125,10 +122,96 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+
+                        <div class="mainstyle">
+                          <div class="mainstyle gqwedae" data-testid="toolBar">
+                            <div class="mainstyle gewrfwfc">{{ balanceWorld }}</div>
+                            <div class="mainstyle gewrfwfc">
+                              <button :disabled="btnPush" class="mainstyle btn herefew">
+                                <div class="mainstyle_2 ngnerwc" dir="auto">
+                                  <span class="mainstyle_2 lkjhgd">
+                                    <span style="vertical-align: inherit;">Твитнуть</span>
+                                  </span>
+                                </div>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                   </div>
                   <div class="mainstyle dsfds"/>
+                  <div class="mainstyle ktrhfb">
+                    <div class="mainstyle">
+                      <section class="mainstyle" role="region">
+                        <div aria-label="Хронология: ваша домашняя хронология" class="mainstyle">
+                          <div class="mainstyle" style="position: relative;">
+                            <div style="position: relative;width: 100%;">
+                              <div class="mainstyle fsdgewf">
+                                <div class="mainstyle">
+                                  <article class="mainstyle dfsewfvew"
+                                           data-focusable="true"
+                                           role="article"
+                                           tabindex="0">
+                                    <div class="mainstyle jrtegvxw">
+                                      <div class="mainstyle jhrtegb">
+                                        <div class="mainstyle hervfdew" data-testid="tweet">
+                                          <div class="mainstyle gewscqwe"
+                                               style="flex-basis: 49px;">
+                                            <div class="mainstyle gwecxsq">
+                                              <div class="mainstyle gwqedcz">
+                                                <a class="mainstyle rtjnerg"
+                                                   data-focusable="true"
+                                                   href=""
+                                                   role="link">
+                                                  <div class="mainstyle bhgerfge">
+                                                    <div class="hgerfwe"></div>
+                                                    <div class="mnbjklt">
+                                                      <div class="mainstyle jktrrtg">
+                                                        <div class="mainstyle ktryrfbw"
+                                                             style="background-image: url(https://pbs.twimg.com/profile_images/1126375627760779264/cWj4ZgNi_bigger.jpg);">
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="mainstyle jrtheff">
+                                            <div class="mainstyle">
+                                              <div class="mainstyle hervdfv">
+                                                <div class="mainstyle jrefdvs">
+                                                  <div class="mainstyle hergcv">
+                                                    <div class="mainstyle dsafqw">
+                                                      <div class="mainstyle gwewcq">
+                                                        <div class="mainstyle_2 hjerevew" dir="auto">
+                                                          <span class="mainstyle_2">{{ text_nameuser }}</span>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="mainstyle">
+                                              <div class="mainstyle hergfdvs" dir="auto" lang="ru">
+                                                {{ text_post }}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </article>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -146,6 +229,7 @@ export default {
   data() {
     return {
       maxword: 700,
+      balanceworld: '',
       row: 1,
       texts: '',
     }
@@ -153,14 +237,19 @@ export default {
   computed: {
     resizeArea: function () {
       return Math.ceil(this.texts.length / 70)
-    }
+    },
+    balanceWorld: function () {
+      return this.maxword - this.texts.length;
+    },
+    btnPush() {
+      return this.texts.length === 0;
+    },
   }
 
 }
 </script>
 
 <style scoped>
-
 .dsfwrv {
   height: 100%;
   display: flex;
@@ -218,7 +307,7 @@ export default {
 
 .kyrergb {
   padding-bottom: 2px;
-  padding-top: 2px;
+  padding-top: 10px;
   max-width: 100%;
 }
 
@@ -500,7 +589,7 @@ export default {
 
 .jrtger {
   display: inline-flex;
-  padding: 10px 0;
+  padding: 3px 0;
   width: 100%;
 }
 
@@ -528,6 +617,80 @@ export default {
   resize: none;
 }
 
+.gqwedae {
+  margin-left: 2px;
+  margin-right: 2px;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  z-index: 1;
+  flex-wrap: wrap;
+}
+
+.gewrfwfc {
+  margin-top: 10px;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+}
+
+.herefew {
+  margin-left: 10px;
+  min-height: 39px;
+  background-color: rgb(255, 131, 0);
+  outline-style: none;
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+  height: 0;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0);
+  border-style: solid;
+  border-radius: 9999px;
+}
+
+.ngnerwc {
+  display: flex;
+  font-weight: 700;
+  font-size: 15px;
+  color: rgb(255, 255, 255);
+  line-height: 1.3125;
+  overflow-wrap: break-word;
+  min-width: 0;
+  max-width: 100%;
+  text-align: center;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.lkjhgd {
+  font-family: inherit;
+  overflow-wrap: break-word;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .dsfds {
   border-bottom-color: rgb(255, 255, 255);
   border-bottom-style: solid;
@@ -536,5 +699,208 @@ export default {
   border-top-color: rgb(255, 255, 255);
   border-top-style: solid;
   border-top-width: 1px;
+}
+
+.ktrhfb {
+  max-width: 800px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fsdgewf {
+  display: block;
+  outline-style: none;
+  border-bottom-color: rgb(255, 255, 255);
+  border-bottom-width: 1px;
+}
+
+.dfsewfvew {
+  overflow: hidden;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  padding-right: 15px;
+  padding-left: 15px;
+  outline-style: none;
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+}
+
+.jrtegvxw {
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  flex-direction: column;
+}
+
+.jhrtegb {
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.hervfdew {
+  padding-top: 10px;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+}
+
+.gewscqwe {
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-flex: 0;
+  flex-grow: 0;
+  margin-right: 10px;
+}
+
+.gwecxsq {
+  -webkit-box-flex: 0;
+  flex-grow: 0;
+  flex-shrink: 1;
+  width: 100%;
+}
+
+.gwqedcz {
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.rtjnerg {
+  display: block;
+  overflow: hidden;
+  border-radius: 9999px;
+  width: 100%;
+
+  transition-duration: 0.2s;
+  transition-property: background-color, box-shadow;
+  outline-style: none;
+  height: 49px;
+}
+
+.bhgerfge {
+  overflow: hidden;
+  display: block;
+}
+
+.hgerfwe {
+  padding-bottom: 100%;
+  width: 100%;
+  display: block;
+}
+
+.mnbjklt {
+  bottom: 0;
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.jktrrtg {
+  overflow: hidden;
+  border-radius: 9999px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: absolute;
+  z-index: 0;
+  flex-basis: auto;
+}
+
+.ktryrfbw {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0);
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.jrtheff {
+  padding-bottom: 10px;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-basis: 0;
+}
+
+.hervdfv {
+  margin-bottom: 2px;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: start;
+  align-items: start;
+}
+
+.jrefdvs {
+  -webkit-box-align: baseline;
+  align-items: baseline;
+  flex-shrink: 1;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+}
+
+.hergcv {
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.dsafqw {
+  outline-style: none;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-shrink: 1;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  max-width: 100%;
+}
+
+.gwewcq {
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  max-width: 100%;
+}
+
+.hjerevew {
+  white-space: nowrap;
+  font-weight: 700;
+  font-size: 15px;
+  color: rgb(255, 255, 255);
+  line-height: 1.3125;
+  overflow-wrap: break-word;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hergfdvs {
+  position: relative;
+  min-width: 0;
+  overflow-wrap: break-word;
+  font-weight: 400;
+  font-size: 15px;
+  text-align: left;
 }
 </style>
