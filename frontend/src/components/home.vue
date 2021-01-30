@@ -142,11 +142,11 @@
                   </div>
                   <div class="mainstyle dsfds"/>
                   <div class="mainstyle ktrhfb">
-                    <div v-bind="posts=mapPost" class="mainstyle">
+                    <div class="mainstyle">
                       <section class="mainstyle" role="region">
                         <div aria-label="Хронология: ваша домашняя хронология" class="mainstyle">
-                          <div class="mainstyle" style="position: relative;" v-bind:v-for="beforeMount">
-                            <div v-for="post in posts.posts"
+                          <div v-bind="posts=mapPost" class="mainstyle" style="position: relative;">
+                            <div v-for="post in posts"
                                  :key="post.id"
                                  :value="post"
                                  style="position: relative;width: 100%;">
@@ -226,7 +226,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+// import {mapGetters} from 'vuex'
 import prettydate from 'pretty-date'
 
 export default {
@@ -244,7 +244,8 @@ export default {
   },
   computed: {
     mapPost() {
-      return mapGetters(['notes'])
+      // return mapGetters(['notes'])
+      return this.$store.getters.notes;
     },
     resizeArea: function () {
       return Math.ceil(this.texts.length / 70)
