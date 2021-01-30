@@ -1,18 +1,25 @@
 <template>
   <div id="app">
-    <Login></Login>
+    <authorization></authorization>
   </div>
 </template>
 
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Login from "@/components/home";
+
+import authorization from "@/components/authorization";
+// import login from "@/components/login";
+// import registration from "@/components/registration";
+// import home from "@/components/home";
 
 export default {
   name: 'App',
   components: {
-    Login,
+    authorization,
+    // login,
+    // registration,
+    // home
   },
   computed: {}
 }
