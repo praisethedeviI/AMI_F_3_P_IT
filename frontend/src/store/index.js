@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import {Note} from '@/api/notes'
 import {ADD_NOTE, REMOVE_NOTE, SET_NOTES} from './mutation-types.js'
 
+
 Vue.use(Vuex)
 
 const state = {
@@ -33,11 +34,11 @@ const actions = {
             commit(ADD_NOTE, note)
         })
     },
-    // deleteNote ({ commit }, note) {
-    //   Note.delete(note).then(response => {
-    //     commit(REMOVE_NOTE, note)
-    //   })
-    // },
+    deleteNote({commit}, noteData) {
+        Note.delete(noteData).then(note => {
+            commit(REMOVE_NOTE, note)
+        })
+    },
     getNotes({commit}) {
         Note.list().then(notes => {
             commit(SET_NOTES, {notes})

@@ -61,7 +61,7 @@
                       <span>Профиль</span>
                     </div>
                   </a>
-                  <a class="mainstyle sdahgdft" href="">
+                  <a class="mainstyle sdahgdft" href="https://ssereda.ru/" target="_blank">
                     <svg class="mainstyle svgg" height="56" style="height: 2.5rem;"
                          viewBox="0 0 56 56" width="56" xmlns="http://www.w3.org/2000/svg">
                       <path id="iconmonstr-globe-5"
@@ -172,7 +172,7 @@
                                                     <div class="mnbjklt">
                                                       <div class="mainstyle jktrrtg">
                                                         <div class="mainstyle ktryrfbw"
-                                                             style="background-image: url(https://pbs.twimg.com/profile_images/1126375627760779264/cWj4ZgNi_bigger.jpg);">
+                                                             v-bind:style="{backgroundImage: image_user,background: image_user }">
                                                         </div>
                                                       </div>
                                                     </div>
@@ -194,6 +194,14 @@
                                                       </div>
                                                     </div>
                                                   </div>
+                                                </div>
+                                                <div class="mainstyle" style="flex-direction: row;">
+                                                  <div class="mainstyle_2" style="margin-right: 30px;">
+                                                    {{ convertDateToTimeAgo(post.created_at) }}
+                                                  </div>
+                                                  <button class="mainstyle_2 hrtfeg" v-on:click="deleteNote(post)">
+                                                    X
+                                                  </button>
                                                 </div>
                                               </div>
                                             </div>
@@ -233,9 +241,8 @@ export default {
   name: "home",
   data() {
     return {
-      username: '',
       texts: '',
-      image_user: '',
+      image_user: 'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png',
       maxword: 700,
       balanceworld: '',
       row: 1,
@@ -261,8 +268,7 @@ export default {
     submitForm(event) {
       this.createNote()
       // Т.к. мы уже отправили запрос на создание заметки строчкой выше,
-      // нам нужно теперь очистить поля username и texts
-      this.username = ''
+      // нам нужно теперь очистить поле texts
       this.texts = ''
       // preventDefault нужно для того, чтобы страница
       // не перезагружалась после нажатия кнопки submit
@@ -272,6 +278,11 @@ export default {
       // Вызываем действие `createNote` из хранилища, которое
       // отправит запрос на создание новой заметки к нашему API.
       this.$store.dispatch('createNote', {username: 'this.username', body: this.texts})
+    },
+    deleteNote(post) {
+      // Вызываем действие `deleteNote` из нашего хранилища, которое
+      // попытается удалить заметку из нашех базы данных, отправив запрос к API
+      this.$store.dispatch('deleteNote', post)
     },
     beforeMount() {
       // Перед тем как загрузить страницу, нам нужно получить список всех
@@ -933,6 +944,11 @@ export default {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.hrtfeg {
+  color: rgb(255, 131, 0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .hergfdvs {
