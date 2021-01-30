@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="beforeMount" class="mainstyle dsfwrv">
+  <div class="mainstyle dsfwrv">
     <div aria-hidden="false" class="mainstyle dfsacasd">
       <header class="mainstyle sdasqwe" role="banner">
         <div class="mainstyle vdcderwrs">
@@ -142,12 +142,12 @@
                   </div>
                   <div class="mainstyle dsfds"/>
                   <div class="mainstyle ktrhfb">
-                    <div class="mainstyle">
+                    <div v-bind="posts=mapPost" class="mainstyle">
                       <section class="mainstyle" role="region">
                         <div aria-label="Хронология: ваша домашняя хронология" class="mainstyle">
-                          <div class="mainstyle" style="position: relative;">
-                            <div v-for="(post, index) in posts"
-                                 :key="index"
+                          <div class="mainstyle" style="position: relative;" v-bind:v-for="beforeMount">
+                            <div v-for="post in posts.posts"
+                                 :key="post.id"
                                  :value="post"
                                  style="position: relative;width: 100%;">
                               <div class="mainstyle fsdgewf">
@@ -227,6 +227,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import prettydate from 'pretty-date'
 
 export default {
   name: "home",
@@ -238,12 +239,12 @@ export default {
       maxword: 700,
       balanceworld: '',
       row: 1,
-      posts: []
+      posts: ''
     }
   },
   computed: {
     mapPost() {
-      return mapGetters(['posts'])
+      return mapGetters(['notes'])
     },
     resizeArea: function () {
       return Math.ceil(this.texts.length / 70)
@@ -269,14 +270,20 @@ export default {
     createNote() {
       // Вызываем действие `createNote` из хранилища, которое
       // отправит запрос на создание новой заметки к нашему API.
-      this.$store.dispatch('createPost', {username: 'this.username', body: this.texts})
+      this.$store.dispatch('createNote', {username: 'this.username', body: this.texts})
     },
     beforeMount() {
       // Перед тем как загрузить страницу, нам нужно получить список всех
       // имеющихся заметок. Для этого мы вызываем действие `getPosts` из
       // нашего хранилища
-      this.$store.dispatch('getPosts')
-    }
+      this.$store.dispatch('getNotes')
+    },
+    convertDateToTimeAgo(date) {
+      return prettydate.format(new Date(date))
+    },
+  },
+  created() {
+    this.beforeMount()
   }
 }
 </script>
