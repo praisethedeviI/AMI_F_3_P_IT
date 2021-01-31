@@ -9,24 +9,24 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        all_notes: [],
+        notes: [],
         users: []
     },
     getters: {
-        notes: state => state.all_notes,
+        notes: state => state.notes,
         users: state => state.users
     },
     mutations: {
         [ADD_NOTE](state, note) {
-            state.all_notes = [note, ...state.all_notes]
+            state.notes = [note, ...state.notes]
         },
         [REMOVE_NOTE](state, {id}) {
-            state.all_notes = state.all_notes.filter(note => {
+            state.notes = state.notes.filter(note => {
                 return note.id !== id
             })
         },
         [SET_NOTES](state, {notes}) {
-            state.all_notes = notes
+            state.notes = notes
         },
 
         [ADD_USER](state, user) {
