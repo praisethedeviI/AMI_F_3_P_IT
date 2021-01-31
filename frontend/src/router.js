@@ -14,7 +14,7 @@ export default new VueRouter({
                 //     if (to.name !== 'Login' && !isAuthenticated ) next({name: login})
                 //     else next()
                 // },
-                meta: {requiresAuth: true}
+                // meta: {requiresAuth: true}
             },
             {
                 path: '/home',

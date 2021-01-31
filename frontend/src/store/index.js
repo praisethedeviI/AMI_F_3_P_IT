@@ -1,23 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
 import {Note} from '@/api/notes'
 import {User} from '@/api/users'
 import {ADD_NOTE, ADD_USER, REMOVE_NOTE, REMOVE_USER, SET_NOTES, SET_USERS} from './mutation-types.js'
 
-// Make Axios play nice with Django CSRF
-axios.defaults.xsrfCookieName = 'csrftoken'
-axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
         all_notes: [],
-        users: [],
-        authUser: {},
-        isAuthenticated: false,
-        jwt: localStorage.getItem('token'),
+        users: []
     },
     getters: {
         notes: state => state.all_notes,

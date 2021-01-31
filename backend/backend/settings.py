@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# Application definition
+# Application definitionset
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,6 +53,14 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    # TODO - set this properly for production
+    'https://localhost:8080',
+    'https://localhost:8000',
+    'http://localhost:8080',
+    'http://localhost:8000',
+)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -60,7 +68,7 @@ REST_FRAMEWORK = {
         #   then open endpoints on a case-by-case basis
 
         # отвечает за то что доступ имеют только авторизованные пользователи
-        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
 
         # отвечает за то что доступ имеют абсолютно все
         'rest_framework.permissions.AllowAny'
