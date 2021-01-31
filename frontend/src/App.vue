@@ -11,8 +11,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 export default {
   name: 'App',
-  components: {},
-  computed: {}
+  created() {
+
+  }
 }
 
 </script>

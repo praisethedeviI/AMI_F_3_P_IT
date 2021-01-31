@@ -311,6 +311,7 @@
 </template>
 <script>
 import {email, helpers, minLength, required, sameAs} from 'vuelidate/lib/validators'
+import router from "@/router";
 
 const alpha = helpers.regex('alpha', /^[a-zA-Zа-яёА-ЯЁ]*$/)
 // Custom regex for a phone number
@@ -367,21 +368,35 @@ export default {
       console.log('Дата рождения: ' + this.formReg.month + '.' + this.formReg.date + '.' + this.formReg.year)
       console.log('Пароль: ' + this.formReg.password)
       console.groupEnd()
-      this.reset()
+      this.autologin_user()
     },
     reset() {
       // сбросить шаг и показать сообщение о регистрации
       this.regMessage = true;
+      // сбросить валидацию
+      this.$v.$reset()
       // убрать сообщение о регистрации
       setTimeout(() => {
         this.regMessage = false
-      }, 3000)
+      }, 1500)
       // сбросить все поля
       for (let input in this.formReg) {
         this.formReg[input] = ''
       }
-      // сбросить валидацию
-      this.$v.$reset()
+    },
+    autologin_user() {
+      var a = this.$store.dispatch('createUser', {
+        username: this.formReg.name,
+        mail: this.formReg.email,
+        phone_number: this.formReg.tel,
+        date: this.formReg.date,
+        password: this.formReg.password
+      })
+      console.log(a)
+      localStorage.key()
+      router.push('home')
+      this.reset()
+
     }
   },
   validations: {

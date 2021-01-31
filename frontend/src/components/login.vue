@@ -27,7 +27,7 @@
       </svg>
       <h1>Войти в Твистер</h1>
       <div class="mainstyle" style="width: 100%;">
-        <form action="/sessions" class="mainstyle" method="post" novalidate @submit.prevent="userRegister">
+        <form action="" class="mainstyle" method="post" novalidate @submit.prevent="userLogin">
           <div v-if="logMessage" class="alert alert-warning" role="alert">
             Не правильные входные данные
           </div>
@@ -107,6 +107,7 @@
 
 <script>
 import {email, helpers, minLength, or, required} from 'vuelidate/lib/validators'
+import axios from "axios";
 
 const MOBILEREG = helpers.regex('alpha', /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/);
 export default {
@@ -131,11 +132,51 @@ export default {
           this.$v.formLog.password.$invalid
     },
   }, methods: {
-    userRegister() {
+    userLogin() {
       console.group("Form second")
       console.log('Вы успешно зарегистрированны!')
       console.groupEnd()
+      this.authenticate()
+    },
+    authenticate() {
+      const payload = {
+        username: this.formLog.login,
+        password: this.formLog.password
+      }
+
+      axios.post(this.$store.state.endpoints.obtainJWT, payload).then((response) => {
+
+        this.$store.commit('updateToken', response.data.token)
+        console.log(this.$store.state.jwt)
+        // get and set auth user
+        const base = {
+          baseURL: this.$store.state.endpoints.baseUrl,
+          headers: {
+            // Set your Authorization to 'JWT', not Bearer!!!
+            Authorization: `JWT ${this.$store.state.jwt}`,
+            'Content-Type': 'application/json'
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        }
+        // Even though the authentication returned a user object that can be
+        // decoded, we fetch it again. This way we aren't super dependant on
+        // JWT and can plug in something else.
+        const axiosInstance = axios.create(base)
+        axiosInstance({url: "/users/", method: "get", params: {}}).then((response) => {
+          this.$store.commit("setAuthUser",
+              {authUser: response.data, isAuthenticated: true})
+          this.$router.push({name: 'home'})
+        })
+      }).catch((error) => {
+
+        console.log(error);
+        console.debug(error);
+        console.dir(error);
+      })
     }
+
   },
   validations: {
     formLog: {
@@ -149,6 +190,9 @@ export default {
       }
     }
   },
+  created() {
+    console.log(this.$store.state.jwt)
+  }
 }
 </script>
 
