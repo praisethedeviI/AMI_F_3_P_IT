@@ -1,7 +1,12 @@
+# from django.contrib.contenttypes.fields import GenericForeignKey
+# from django.contrib.contenttypes.fields import GenericRelation
+# from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import UserManager, AbstractUser
+from django.contrib.auth.models import AbstractUser
 
 
 class CustomUserManager(BaseUserManager):
@@ -49,9 +54,21 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
 
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveSmallIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
 class Post(models.Model):
     # image_user = models.ImageField()
     username = models.CharField(max_length=255)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    likes = GenericRelation(Like)
+
+    @property
+    def total_likes(self):
+        return self.likes.count()

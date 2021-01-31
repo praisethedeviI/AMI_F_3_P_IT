@@ -9,13 +9,6 @@ export default new VueRouter({
             {
                 path: '',
                 component: authorization,
-                // beforeEnter: (to, from, next) => {
-                //     // здесь проверьте залогинен ли пользователь, если нет, то редиректите его на страницу логина
-                //     //&& !isAuthenticated
-                //     if (to.name !== 'Login' ) next({name: login})
-                //     else next()
-                // },
-                meta: {requiresAuth: true}
             },
             {
                 path: '/home',

@@ -11,9 +11,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 export default {
   name: 'App',
-  created() {
-
-  }
 }
 
 </script>
@@ -25,7 +22,6 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   overscroll-behavior-y: none;
   font-size: 15px;
-  /*margin-right: 17px;*/
 }
 
 body {

@@ -385,18 +385,15 @@ export default {
       }
     },
     autologin_user() {
-      var a = this.$store.dispatch('createUser', {
+      this.$store.dispatch('createUser', {
         username: this.formReg.name,
         mail: this.formReg.email,
         phone_number: this.formReg.tel,
         date: this.formReg.date,
         password: this.formReg.password
       })
-      console.log(a)
-      localStorage.key()
       router.push('home')
       this.reset()
-
     }
   },
   validations: {
