@@ -42,15 +42,15 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    username = models.CharField(max_length=63)
-    email = models.EmailField(_('email_address'), unique=True)
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    email = models.EmailField(_('email_address'), unique=True)
+    username = models.CharField(max_length=63)
     phone_number = models.CharField(max_length=15, unique=True)
     date = models.DateTimeField(auto_now_add=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+
     objects = CustomUserManager()
 
 

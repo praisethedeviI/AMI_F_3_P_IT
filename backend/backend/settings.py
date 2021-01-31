@@ -66,6 +66,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         # By default we set everything to admin,
         #   then open endpoints on a case-by-case basis
+        'rest_framework.permissions.IsAdminUser',
         'rest_framework.permissions.IsAuthenticated'
     ),
     'TEST_REQUEST_RENDERER_CLASSES': (
