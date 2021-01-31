@@ -211,6 +211,27 @@
                                               <div class="mainstyle hergfdvs" dir="auto" lang="ru">
                                                 {{ post.body }}
                                               </div>
+                                              <div class="mainstyle herevc">
+                                                <div class="mainstyle jrtgeaqs">
+                                                  <div class="mainstyle jtrbae">
+                                                    <div class="mainstyle_2 jrtgcxa">
+                                                      <div class="mainstyle hergccx">
+                                                        <svg class="kfdsdasm" viewBox="0 0 24 24">
+                                                          <g>
+                                                            <path
+                                                                d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path>
+                                                          </g>
+                                                        </svg>
+                                                      </div>
+                                                      <div class="mainstyle hergccx" style="overflow: hidden;">
+                                                        <span class="mainstyle_2 nerrsc">
+                                                              <span style="vertical-align: inherit;">560</span>
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -956,5 +977,85 @@ export default {
   font-weight: 400;
   font-size: 15px;
   text-align: left;
+}
+
+.herevc {
+  max-width: 425px;
+  margin-top: 10px;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+
+}
+
+.jrtgeaqs {
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+}
+
+.jtrbae {
+  overflow: visible;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  outline-style: none;
+  -webkit-box-pack: center;
+  justify-content: center;
+}
+
+.jrtgcxa {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  min-width: 0;
+  overflow-wrap: break-word;
+  line-height: 1.3125;
+  font-size: 15px;
+  font-weight: 400;
+  transition-duration: 0.2s;
+  white-space: nowrap;
+  color: rgb(136, 153, 166);
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  transition-property: color;
+}
+
+.hergccx {
+  display: inline-flex;
+}
+
+
+.kfdsdasm {
+  display: inline-block;
+  height: 1.25em;
+  fill: currentcolor;
+  max-width: 100%;
+  position: relative;
+  vertical-align: text-bottom;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 1.25em;
+}
+
+.nerrsc {
+
+  color: inherit;
+  font: inherit;
+  white-space: inherit;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow-wrap: break-word;
+  min-width: calc(1em + 20px);
+  transition-property: -webkit-transform, transform;
+  transition-duration: 0.3s;
+  line-height: calc(20px);
+  font-size: 13px;
+  transform: translate3d(0px, 0px, 0px);
 }
 </style>

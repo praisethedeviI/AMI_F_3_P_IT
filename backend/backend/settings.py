@@ -62,30 +62,30 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
 )
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        # By default we set everything to admin,
-        #   then open endpoints on a case-by-case basis
-
-        # отвечает за то что доступ имеют только авторизованные пользователи
-        'rest_framework.permissions.IsAuthenticated',
-
-        # отвечает за то что доступ имеют абсолютно все
-        'rest_framework.permissions.AllowAny'
-    ),
-    'TEST_REQUEST_RENDERER_CLASSES': (
-        'rest_framework.renderers.MultiPartRenderer',
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.TemplateHTMLRenderer'
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 20,
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         # By default we set everything to admin,
+#         #   then open endpoints on a case-by-case basis
+#
+#         # отвечает за то что доступ имеют только авторизованные пользователи
+#         'rest_framework.permissions.IsAuthenticated',
+#
+#         # отвечает за то что доступ имеют абсолютно все
+#         'rest_framework.permissions.AllowAny'
+#     ),
+#     'TEST_REQUEST_RENDERER_CLASSES': (
+#         'rest_framework.renderers.MultiPartRenderer',
+#         'rest_framework.renderers.JSONRenderer',
+#         'rest_framework.renderers.TemplateHTMLRenderer'
+#     ),
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.BasicAuthentication',
+#     ),
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+#     'PAGE_SIZE': 20,
+# }
 
 from datetime import timedelta
 
