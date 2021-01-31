@@ -37,12 +37,12 @@
                   <span>Присоединяйтесь к Твистору прямо сейчас!</span>
                 </div>
                 <div>
-                  <a class="mainstyle btn_signup" data-focusable="true" href="/signup" role="button">
+                  <router-link class="mainstyle btn_signup" data-focusable="true" role="button" to="/signup">
                     <span>Зарегистрироваться</span>
-                  </a>
-                  <a class="mainstyle btn_login" data-focusable="true" href="/login" role="button">
+                  </router-link>
+                  <router-link class="mainstyle btn_login" data-focusable="true" role="button" to="/login">
                     <span>Войти</span>
-                  </a>
+                  </router-link>
                 </div>
 
               </div>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <authorization></authorization>
+    <router-view/>
   </div>
 </template>
 
@@ -8,19 +8,10 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import authorization from "@/components/authorization";
-// import login from "@/components/login";
-// import registration from "@/components/registration";
-// import home from "@/components/home";
 
 export default {
   name: 'App',
-  components: {
-    authorization,
-    // login,
-    // registration,
-    // home
-  },
+  components: {},
   computed: {}
 }
 

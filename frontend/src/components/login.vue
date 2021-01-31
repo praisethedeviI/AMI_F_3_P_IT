@@ -85,7 +85,7 @@
 
           <div class="mainstyle dsfdscx">
             <button :disabled="logBtn" class="btn btn-primary dscxza" type="submit">
-              Зарегистрироваться
+              Войти
             </button>
           </div>
           <div class="mainstyle dsczasd">
@@ -94,10 +94,10 @@
             </a>
 
             <span aria-hidden="true" class="mainstyle bvcdsf">·</span>
-
-            <a class="mainstyle gdfdfa" data-focusable="true" href="/signup" role="link">
+            <router-link class="mainstyle gdfdfa" data-focusable="true" role="link" to="/signup">
               Зарегистрироваться в Твисторе
-            </a>
+            </router-link>
+
           </div>
         </form>
       </div>

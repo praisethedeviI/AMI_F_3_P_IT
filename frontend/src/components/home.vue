@@ -145,8 +145,8 @@
                     <div class="mainstyle">
                       <section class="mainstyle" role="region">
                         <div aria-label="Хронология: ваша домашняя хронология" class="mainstyle">
-                          <div v-bind="posts=mapPost" class="mainstyle" style="position: relative;">
-                            <div v-for="post in posts"
+                          <div class="mainstyle" style="position: relative;">
+                            <div v-for="post in notes"
                                  :key="post.id"
                                  :value="post"
                                  style="position: relative;width: 100%;">
@@ -199,9 +199,11 @@
                                                   <div class="mainstyle_2" style="margin-right: 30px;">
                                                     {{ convertDateToTimeAgo(post.created_at) }}
                                                   </div>
-                                                  <button class="mainstyle_2 hrtfeg" v-on:click="deleteNote(post)">
-                                                    X
-                                                  </button>
+                                                  <form @click="deleteNote(post)">
+                                                    <button class="mainstyle_2 hrtfeg">
+                                                      X
+                                                    </button>
+                                                  </form>
                                                 </div>
                                               </div>
                                             </div>
@@ -234,7 +236,7 @@
 </template>
 
 <script>
-// import {mapGetters} from 'vuex'
+import {mapGetters} from 'vuex'
 import prettydate from 'pretty-date'
 
 export default {
@@ -246,14 +248,10 @@ export default {
       maxword: 700,
       balanceworld: '',
       row: 1,
-      posts: ''
     }
   },
   computed: {
-    mapPost() {
-      // return mapGetters(['notes'])
-      return this.$store.getters.notes;
-    },
+    ...mapGetters(['notes']),
     resizeArea: function () {
       return Math.ceil(this.texts.length / 70)
     },
@@ -279,10 +277,10 @@ export default {
       // отправит запрос на создание новой заметки к нашему API.
       this.$store.dispatch('createNote', {username: 'this.username', body: this.texts})
     },
-    deleteNote(post) {
+    deleteNote(note) {
       // Вызываем действие `deleteNote` из нашего хранилища, которое
       // попытается удалить заметку из нашех базы данных, отправив запрос к API
-      this.$store.dispatch('deleteNote', post)
+      this.$store.dispatch('deleteNote', note)
     },
     beforeMount() {
       // Перед тем как загрузить страницу, нам нужно получить список всех
