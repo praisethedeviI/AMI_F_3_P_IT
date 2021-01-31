@@ -9,11 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id',
-            'username',
-            'mail',
+            'email',
             'phone_number',
-            'date',
-            'password',
+            'username',
+            'first_name',
+            'last_name',
+            'date', 'date_joined'
         )
 
 
