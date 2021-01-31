@@ -62,7 +62,8 @@
             </div>
           </div>
           <nav class="inner">
-            <div>Copyright <a href="https://ssereda.ru/">&copy; Semen Sereda</a></div>
+            <div>Copyright <a href="https://github.com/PrincePepper">&copy; Semen Sereda</a></div>
+            <div>Copyright <a href="https://github.com/praisethedeviI">&copy; Stanislav Nagornov</a></div>
           </nav>
         </div>
       </main>
@@ -72,7 +73,6 @@
 
 <script>
 export default {
-  name: "login"
 }
 </script>
 

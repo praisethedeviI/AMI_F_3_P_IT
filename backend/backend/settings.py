@@ -35,38 +35,35 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'homepage',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'homepage',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    # TODO - set this properly for production
-    'https://localhost:8080',
-    'https://localhost:8000',
-    'http://localhost:8080',
-    'http://localhost:8000',
-)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         # By default we set everything to admin,
         #   then open endpoints on a case-by-case basis
-        'rest_framework.permissions.IsAuthenticated'
+
+        # отвечает за то что доступ имеют только авторизованные пользователи
+        # 'rest_framework.permissions.IsAuthenticated',
+
+        # отвечает за то что доступ имеют абсолютно все
+        'rest_framework.permissions.AllowAny'
     ),
     'TEST_REQUEST_RENDERER_CLASSES': (
         'rest_framework.renderers.MultiPartRenderer',
