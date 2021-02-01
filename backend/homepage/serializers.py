@@ -30,6 +30,11 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class CurrentUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        extra_kwargs = {'password': {'write_only': False}}
+
+
 class PostSerializer(serializers.ModelSerializer):
 
     is_fan = serializers.SerializerMethodField()
