@@ -43,11 +43,11 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
+    REQUIRED_FIELDS = ['username']
+    # id = models.UUIDField(primary_key=True)
     email = models.EmailField(_('email_address'), unique=True)
     username = models.CharField(max_length=63)
-    phone_number = models.CharField(max_length=15, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
@@ -59,6 +59,7 @@ class Like(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveSmallIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
 
 class Post(models.Model):
     # image_user = models.ImageField()

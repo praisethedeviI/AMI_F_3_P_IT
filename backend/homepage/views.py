@@ -3,8 +3,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 # from .mixins import LikedMixin
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.permissions import AllowAny
+from rest_framework import permissions
 
+from .permissions import *
 from .mixins import LikedMixin
 from .models import Post, User
 from .serializers import PostSerializer, UserSerializer
@@ -13,7 +14,7 @@ from .serializers import PostSerializer, UserSerializer
 class PostViewSet(LikedMixin, viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsOwnerOrReadOnly, permissions.IsAdminUser, )
     authentication_classes = (TokenAuthentication, SessionAuthentication,)
     filter_backends = (DjangoFilterBackend,)
 
@@ -21,3 +22,4 @@ class PostViewSet(LikedMixin, viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-id')
     serializer_class = UserSerializer
+    permission_classes = (WriteOnly|permissions.IsAdminUser, )

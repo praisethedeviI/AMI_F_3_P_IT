@@ -13,20 +13,31 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'phone_number',
             'username',
+            'password',
             'first_name',
             'last_name',
-            'date', 'date_joined'
+            'date',
+            'date_joined'
         )
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User(
+            email=validated_data['email'],
+            username=validated_data['username']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class PostSerializer(serializers.ModelSerializer):
+    User2 = get_user_model()
+
     class Meta:
         model = Post
-        fields = ('id',
-                  'username',
-                  'body',
-                  'total_likes',
-                  'created_at')
+        fields = '__all__'
+        extra_kwargs = {'user_id': {'read_only': True}, 'username': {'read_only': True}}
 
         def get_is_fan(self, obj) -> bool:
             """Check if a `request.user` has liked this tweet (`obj`).
@@ -34,8 +45,16 @@ class PostSerializer(serializers.ModelSerializer):
             user = self.context.get('request').user
             return likes_services.is_fan(obj, user)
 
+    def create(self, validated_data):
+        user = self.context.get('request').user
+        post = Post(
+            user_id=user,
+            username=user.username,
+            body=validated_data['body'],
+        )
+        post.save()
+        return post
 
-User2 = get_user_model()
 
 
 class FanSerializer(serializers.ModelSerializer):
