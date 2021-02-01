@@ -1,12 +1,12 @@
 # from django.contrib.contenttypes.fields import GenericForeignKey
 # from django.contrib.contenttypes.fields import GenericRelation
 # from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractUser
 
 
 class CustomUserManager(BaseUserManager):
@@ -14,6 +14,7 @@ class CustomUserManager(BaseUserManager):
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
+
     def create_user(self, email, password, **extra_fields):
         """
         Create and save a User with the given email and password.
@@ -59,6 +60,7 @@ class Like(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveSmallIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
 
 class Post(models.Model):
     # image_user = models.ImageField()
