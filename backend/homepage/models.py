@@ -1,6 +1,4 @@
-# from django.contrib.contenttypes.fields import GenericForeignKey
-# from django.contrib.contenttypes.fields import GenericRelation
-# from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -56,9 +54,9 @@ class User(AbstractUser):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='likes')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveSmallIntegerField()
+    object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
 

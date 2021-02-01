@@ -309,6 +309,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import {email, helpers, minLength, required, sameAs} from 'vuelidate/lib/validators'
 import router from "@/router";

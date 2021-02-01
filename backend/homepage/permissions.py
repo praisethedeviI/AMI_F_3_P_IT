@@ -1,10 +1,12 @@
 from rest_framework import permissions
 
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
+class IsOwnerOrReadOnly(permissions.IsAuthenticated):
 
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
+        METHODS = ["POST", 'GET', 'HEAD', 'OPTIONS', ]
+
+        if request.method in METHODS:
             return True
         return obj.user_id == request.user
 

@@ -14,10 +14,7 @@ from .serializers import PostSerializer, UserSerializer
 class PostViewSet(LikedMixin, viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
-    permission_classes = (IsOwnerOrReadOnly, permissions.IsAdminUser, )
-    authentication_classes = (TokenAuthentication, SessionAuthentication,)
-    filter_backends = (DjangoFilterBackend,)
-
+    permission_classes = (IsOwnerOrReadOnly, )
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-id')

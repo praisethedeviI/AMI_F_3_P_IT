@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from . import services as likes_services
@@ -32,18 +31,27 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    User2 = get_user_model()
+
+    is_fan = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = (
+            'id',
+            'username',
+            'user_id',
+            'body',
+            'created_at',
+            'total_likes',
+            'is_fan'
+        )
         extra_kwargs = {'user_id': {'read_only': True}, 'username': {'read_only': True}}
 
-        def get_is_fan(self, obj) -> bool:
-            """Check if a `request.user` has liked this tweet (`obj`).
-            """
-            user = self.context.get('request').user
-            return likes_services.is_fan(obj, user)
+    def get_is_fan(self, obj) -> bool:
+        """Check if a `request.user` has liked this tweet (`obj`).
+        """
+        user = self.context.get('request').user
+        return likes_services.is_fan(obj, user)
 
     def create(self, validated_data):
         user = self.context.get('request').user
@@ -56,7 +64,6 @@ class PostSerializer(serializers.ModelSerializer):
         return post
 
 
-
 class FanSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
 
@@ -67,6 +74,5 @@ class FanSerializer(serializers.ModelSerializer):
             'full_name',
         )
 
-    @staticmethod
-    def get_full_name(obj):
+    def get_full_name(self, obj):
         return obj.get_full_name()
