@@ -16,6 +16,7 @@ export default new Vuex.Store({
         endpoints: {
             // TODO: Remove hardcoding of dev endpoints
             obtainJWT: 'http://localhost:8000/api/v1/auth/obtain_token/',
+            refreshJWT: 'http://localhost:8000/api/v1/auth/refresh_token/',
             baseUrl: 'http://localhost:8000/api/v1/'
         }
     },

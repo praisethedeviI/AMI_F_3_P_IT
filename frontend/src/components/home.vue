@@ -350,7 +350,7 @@ export default {
     },
   },
   created() {
-    this.fetchEventsList();
+     this.fetchEventsList();
     this.timer = setInterval(this.fetchEventsList, 3000)
   },
   beforeDestroy() {
