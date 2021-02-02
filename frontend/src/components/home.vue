@@ -348,9 +348,16 @@ export default {
     convertDateToTimeAgo(date) {
       return prettydate.format(new Date(date))
     },
+    // getUser() {
+    //   const axiosInstance = axios.create(this.base)
+    //   axiosInstance({url: "/current_user/", method: "get", params: {}}).then((user) => {
+    //     console.log(user.data.id)
+    //     return user.data.id;
+    //   })
+    // }
   },
   created() {
-     this.fetchEventsList();
+    this.fetchEventsList();
     this.timer = setInterval(this.fetchEventsList, 3000)
   },
   beforeDestroy() {
