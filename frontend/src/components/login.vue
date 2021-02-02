@@ -35,7 +35,7 @@
             <label class="mainstyle fdxads">
               <div class="mainstyle dsdssa">
                 <div class="mainstyle fdsfcaqw">
-                  <span class="sfasa">Номер телефона, адрес электронной почты или имя пользователя</span>
+                  <span class="sfasa">Адрес электронной почты</span>
                 </div>
                 <input autocapitalize="none"
                        autocomplete="on"
@@ -44,14 +44,14 @@
                        dir="auto"
                        id="login"
                        spellcheck="false"
-                       v-model.trim="formLog.login"
-                       :class="{'is-invalid':$v.formLog.login.$error}"
+                       v-model.trim="login"
+                       :class="{'is-invalid':$v.login.$error}"
                        name="session[tel_or_email]"
                        type="email"
-                       @blur="$v.formLog.login.$touch()">
+                       @blur="$v.login.$touch()">
 
-                <div v-if="!$v.formLog.login.required" class="invalid-feedback">{{ reqText }}</div>
-                <div v-if="!$v.formLog.login.checklogin" class="invalid-feedback">{{ LoginText }}</div>
+                <div v-if="!$v.login.required" class="invalid-feedback">{{ reqText }}</div>
+                <div v-if="!$v.login.email" class="invalid-feedback">{{ LoginText }}</div>
               </div>
             </label>
           </div>
@@ -68,15 +68,15 @@
                        dir="auto"
                        id="password"
                        spellcheck="false"
-                       v-model.trim="formLog.password"
-                       :class="{'is-invalid':$v.formLog.password.$error}"
+                       v-model.trim="password"
+                       :class="{'is-invalid':$v.password.$error}"
                        name="session[password]"
                        type="password"
-                       @blur="$v.formLog.password.$touch()">
-                <div v-if="!$v.formLog.password.required" class="invalid-feedback">
+                       @blur="$v.password.$touch()">
+                <div v-if="!$v.password.required" class="invalid-feedback">
                   {{ reqText }}
                 </div>
-                <div v-if="!$v.formLog.password.minLength" class="invalid-feedback">
+                <div v-if="!$v.password.minLength" class="invalid-feedback">
                   {{ minLengthText }}
                 </div>
               </div>
@@ -106,9 +106,9 @@
 </template>
 
 <script>
-import {email, helpers, minLength, or, required} from 'vuelidate/lib/validators'
+import {email, minLength, required} from 'vuelidate/lib/validators'
+import axios from "axios";
 
-const MOBILEREG = helpers.regex('alpha', /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/);
 export default {
   name: "login",
   data() {
@@ -116,39 +116,71 @@ export default {
       logMessage: false,
       reqText: 'Поле обязательно для заполнения',
       reqTextMin: 'обязательно',
-      LoginText: 'Не похоже на почту или телефон',
+      LoginText: 'Не похоже на почту',
       minLengthText: 'Минимальная длина 6 символов!',
       passwordConfirmText: 'Пароли не совпадают',
-      formLog: {
-        login: '',
-        password: ''
-      }
+      login: '',
+      password: ''
     }
   },
   computed: {
     logBtn() {
-      return this.$v.formLog.login.$invalid ||
-          this.$v.formLog.password.$invalid
+      return this.$v.login.$invalid ||
+          this.$v.password.$invalid
     },
   }, methods: {
     userLogin() {
-      console.log('Вы успешно зарегистрированны!')
+      this.authenticate()
+      // console.log('Вы успешно зарегистрированны!')
+    },
+    authenticate() {
+      const payload = {
+        email: this.login,
+        password: this.password
+      }
+      axios.post(this.$store.state.endpoints.obtainJWT, payload).then((response) => {
+        this.$store.commit('updateToken', response.data.token)
+        // get and set auth user
+        const base = {
+          baseURL: this.$store.state.endpoints.baseUrl,
+          headers: {
+            // Set your Authorization to 'JWT', not Bearer!!!
+            Authorization: `JWT ${this.$store.state.jwt}`,
+            'Content-Type': 'application/json'
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        }
+        // Even though the authentication returned a user object that can be
+        // decoded, we fetch it again. This way we aren't super dependant on
+        // JWT and can plug in something else.
+        const axiosInstance = axios.create(base)
+        axiosInstance({
+          url: "/notes/",
+          method: "get",
+          params: {}
+        }).then((response) => {
+          this.$store.commit("setAuthUser", {authUser: response.data, isAuthenticated: true})
+          this.$router.push({name: 'home'})
+        })
+      }).catch((error) => {
+        console.log(error);
+        console.debug(error);
+        console.dir(error);
+      })
     }
   },
   validations: {
-    formLog: {
-      login: {
-        required,
-        checklogin: or(email, MOBILEREG)
-      },
-      password: {
-        required,
-        minLength: minLength(6)
-      }
+    login: {
+      required,
+      email
+    },
+    password: {
+      required,
+      minLength: minLength(6)
     }
   },
-  created() {
-  }
 }
 </script>
 

@@ -35,7 +35,7 @@
                   </svg>
                 </div>
               </div>
-              <form class="mainstyle adbvdcfhr" novalidate @submit.prevent="userRegister">
+              <form class="mainstyle adbvdcfhr" novalidate @submit.prevent="autologin_user">
                 <div class="mainstyle" style="margin-left: 30px;margin-right: 30px; text-align: left;">
                   <div v-if="regMessage" class="alert alert-success" role="alert">
                     Вы успешно зарегистрировались!
@@ -312,7 +312,8 @@
 
 <script>
 import {email, helpers, minLength, required, sameAs} from 'vuelidate/lib/validators'
-import router from "@/router";
+
+import axios from "axios";
 
 const alpha = helpers.regex('alpha', /^[a-zA-Zа-яёА-ЯЁ]*$/)
 // Custom regex for a phone number
@@ -369,7 +370,6 @@ export default {
       console.log('Дата рождения: ' + this.formReg.month + '.' + this.formReg.date + '.' + this.formReg.year)
       console.log('Пароль: ' + this.formReg.password)
       console.groupEnd()
-      this.autologin_user()
     },
     reset() {
       // сбросить шаг и показать сообщение о регистрации
@@ -386,15 +386,61 @@ export default {
       }
     },
     autologin_user() {
-      this.$store.dispatch('createUser', {
-        username: this.formReg.name,
-        mail: this.formReg.email,
-        phone_number: this.formReg.tel,
-        date: this.formReg.date,
-        password: this.formReg.password
+      const axiosInstance = axios.create({baseURL: this.$store.state.endpoints.baseUrl})
+      axiosInstance(
+          {
+            url: "/users/",
+            method: "post",
+            data:
+                {
+                  email: this.formReg.email,
+                  phone_number: this.formReg.tel,
+                  username: this.formReg.name,
+                  password: this.formReg.password
+                }
+          }).then(() => {
+        const payload = {
+          email: this.formReg.email,
+          password: this.formReg.password
+        }
+        axios.post(this.$store.state.endpoints.obtainJWT, payload).then((response) => {
+          this.$store.commit('updateToken', response.data.token)
+          // get and set auth user
+          const base = {
+            baseURL: this.$store.state.endpoints.baseUrl,
+            headers: {
+              // Set your Authorization to 'JWT', not Bearer!!!
+              Authorization: `JWT ${this.$store.state.jwt}`,
+              'Content-Type': 'application/json'
+            },
+            xhrFields: {
+              withCredentials: true
+            }
+          }
+          // Even though the authentication returned a user object that can be
+          // decoded, we fetch it again. This way we aren't super dependant on
+          // JWT and can plug in something else.
+          const axiosInstance = axios.create(base)
+          axiosInstance({
+            url: "/notes/",
+            method: "get",
+            params: {}
+          }).then((response) => {
+            this.$store.commit("setAuthUser", {authUser: response.data, isAuthenticated: true})
+            this.$router.push({name: 'home'})
+            this.userRegister()
+            this.reset()
+          })
+        }).catch((error) => {
+          console.log(error);
+          console.debug(error);
+          console.dir(error);
+        })
+      }).catch((error) => {
+        console.log(error);
+        console.debug(error);
+        console.dir(error);
       })
-      router.push('home')
-      this.reset()
     }
   },
   validations: {

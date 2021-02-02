@@ -36,7 +36,6 @@ class CurrentUserSerializer(UserSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-
     is_fan = serializers.SerializerMethodField()
 
     class Meta:
@@ -63,8 +62,7 @@ class PostSerializer(serializers.ModelSerializer):
         post = Post(
             user_id=user,
             username=user.username,
-            body=validated_data['body'],
-        )
+            body=validated_data['body'], )
         post.save()
         return post
 

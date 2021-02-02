@@ -9,6 +9,9 @@ export default new VueRouter({
             {
                 path: '',
                 component: authorization,
+                // beforeEnter: (to, from, next) => {
+                //
+                // }
             },
             {
                 path: '/home',

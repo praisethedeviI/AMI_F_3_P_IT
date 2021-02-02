@@ -16,12 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
     # JWT auth
     url(r'^api/v1/auth/obtain_token/', obtain_jwt_token),
-
+    url(r'^api/v1/auth/refresh_token/', refresh_jwt_token),
     # The rest of the endpoints
     url(r'^api/v1/', include('homepage.urls')),
     path('admin/', admin.site.urls),

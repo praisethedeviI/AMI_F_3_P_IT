@@ -199,11 +199,11 @@
                                                   <div class="mainstyle_2" style="margin-right: 30px;">
                                                     {{ convertDateToTimeAgo(post.created_at) }}
                                                   </div>
-                                                  <form @click="deleteNote(post)">
-                                                    <button class="mainstyle_2 hrtfeg">
+                                                  <div role="button" @click="deleteNote(post)">
+                                                    <div class="mainstyle_2 hrtfeg">
                                                       X
-                                                    </button>
-                                                  </form>
+                                                    </div>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
@@ -212,20 +212,23 @@
                                                 {{ post.body }}
                                               </div>
                                               <div class="mainstyle herevc">
-                                                <div class="mainstyle jrtgeaqs">
+                                                <div class="mainstyle jrtgeaqs" role="button"
+                                                     @click="likeOrdislikePost(post.id)">
                                                   <div class="mainstyle jtrbae">
-                                                    <div class="mainstyle_2 jrtgcxa">
+                                                    <div class="mainstyle_2 jrtgcxa" v-bind:style="{color: color_like}">
                                                       <div class="mainstyle hergccx">
                                                         <svg class="kfdsdasm" viewBox="0 0 24 24">
                                                           <g>
                                                             <path
-                                                                d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path>
+                                                                d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12z"></path>
                                                           </g>
                                                         </svg>
                                                       </div>
                                                       <div class="mainstyle hergccx" style="overflow: hidden;">
                                                         <span class="mainstyle_2 nerrsc">
-                                                              <span style="vertical-align: inherit;">560</span>
+                                                              <span style="vertical-align: inherit;">
+                                                                {{ post.total_likes }}
+                                                              </span>
                                                         </span>
                                                       </div>
                                                     </div>
@@ -259,6 +262,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import prettydate from 'pretty-date'
+import axios from "axios";
 
 export default {
   name: "home",
@@ -269,6 +273,19 @@ export default {
       maxword: 700,
       balanceworld: '',
       row: 1,
+      base: {
+        baseURL: this.$store.state.endpoints.baseUrl,
+        headers: {
+          // Set your Authorization to 'JWT', not Bearer!!!
+          Authorization: `JWT ${this.$store.state.jwt}`,
+          'Content-Type': 'application/json'
+        },
+        xhrFields: {
+          withCredentials: true
+        }
+      },
+      color_like: 'rgb(255,255,255)',
+      timer: ''
     }
   },
   computed: {
@@ -285,43 +302,67 @@ export default {
   },
   methods: {
     submitForm(event) {
-      this.createNote()
-      // Т.к. мы уже отправили запрос на создание заметки строчкой выше,
-      // нам нужно теперь очистить поле texts
+      const axiosInstance = axios.create(this.base)
+      axiosInstance({url: "/notes/", method: "post", data: {body: this.texts}}).then((note) => {
+        let a = note.data;
+        this.$store.commit('ADD_NOTE', a)
+      })
       this.texts = ''
-      // preventDefault нужно для того, чтобы страница
-      // не перезагружалась после нажатия кнопки submit
+
       event.preventDefault()
     },
-    createNote() {
-      // Вызываем действие `createNote` из хранилища, которое
-      // отправит запрос на создание новой заметки к нашему API.
-      this.$store.dispatch('createNote', {username: 'this.username', body: this.texts})
-    },
     deleteNote(note) {
-      // Вызываем действие `deleteNote` из нашего хранилища, которое
-      // попытается удалить заметку из нашех базы данных, отправив запрос к API
-      this.$store.dispatch('deleteNote', note)
+      const axiosInstance = axios.create(this.base)
+      axiosInstance({url: `/notes/${note.id}/`, method: "delete", params: {}}).then(() => {
+        this.$store.commit('REMOVE_NOTE', {notes: note})
+
+      })
+    },
+    likeOrdislikePost(note_id) {
+      const axiosInstance = axios.create(this.base)
+      axiosInstance({url: `/notes/${note_id}/`, method: "get", params: {}}).then((note) => {
+        if (note.data.is_fan) {
+          axiosInstance({url: `/notes/${note_id}/unlike/`, method: "post", params: {}})
+          for (let input in this.notes)
+            if (this.notes[input].id === note_id)
+              this.notes[input].total_likes = this.notes[input].total_likes - 1;
+        } else {
+          axiosInstance({url: `/notes/${note_id}/like/`, method: "post", params: {}})
+          for (let input in this.notes)
+            if (this.notes[input].id === note_id)
+              this.notes[input].total_likes = this.notes[input].total_likes + 1;
+        }
+
+      })
     },
     beforeMount() {
-      // Перед тем как загрузить страницу, нам нужно получить список всех
-      // имеющихся заметок. Для этого мы вызываем действие `getPosts` из
-      // нашего хранилища
-      this.$store.dispatch('getNotes')
+      const axiosInstance = axios.create(this.base)
+      axiosInstance({url: "/notes/", method: "get", params: {}}).then((notes) => {
+        let a = notes.data.results;
+        this.$store.commit('SET_NOTES', {notes: a})
+      })
+    },
+    fetchEventsList: function () {
+      this.beforeMount();
     },
     convertDateToTimeAgo(date) {
       return prettydate.format(new Date(date))
     },
   },
   created() {
-    this.beforeMount()
+    this.fetchEventsList();
+    this.timer = setInterval(this.fetchEventsList, 3000)
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   }
 }
 </script>
 
 <style scoped>
+
 .dsfwrv {
-  height: 100%;
+  height: auto;
   display: flex;
   -ms-flex: 1 1 0;
 }
@@ -896,6 +937,7 @@ export default {
   top: 0;
   position: absolute;
   width: 100%;
+  background-image: url(https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png);
 }
 
 .jrtheff {
@@ -968,6 +1010,7 @@ export default {
 .hrtfeg {
   color: rgb(255, 131, 0);
   background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
 }
 
 .hergfdvs {
@@ -1022,10 +1065,12 @@ export default {
   -webkit-box-pack: start;
   justify-content: flex-start;
   transition-property: color;
+  cursor: pointer;
 }
 
 .hergccx {
   display: inline-flex;
+  color: inherit;
 }
 
 
